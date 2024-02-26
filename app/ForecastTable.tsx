@@ -1,6 +1,10 @@
 import React from "react";
 import { ForecastDay } from "./forecast_response";
-import { tableDataClass, tableRowClass } from "./page";
+import {
+  tableDataPrimaryClass,
+  tableDataClass,
+  tableRowClass
+} from "./styleutils";
 
 export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
   forecastData
@@ -8,12 +12,20 @@ export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full border-collapse">
+        <colgroup>
+          <col width="10%" />
+          <col width="255px" />
+          <col width="10%" />
+          <col width="10%" />
+          <col width="10%" />
+          <col width="10%" />
+        </colgroup>
         <thead className="bg-gray-800 dark:bg-gray-700">
           <tr>
             <th className={tableDataClass}>Period</th>
             <th className={tableDataClass}>Conditions</th>
-            <th className={tableDataClass}>Temperature (Low)</th>
-            <th className={tableDataClass}>Temperature (High)</th>
+            <th className={tableDataClass}>(Low)</th>
+            <th className={tableDataClass}>(High)</th>
             <th className={tableDataClass}>Precipitation</th>
             <th className={tableDataClass}>Wind</th>
           </tr>
@@ -21,7 +33,7 @@ export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
         <tbody className="bg-gray-700 dark:bg-gray-600">
           {forecastData.map((forecast, index) => (
             <tr key={index} className={tableRowClass}>
-              <td className={tableDataClass}>{forecast.period}</td>
+              <td className={tableDataPrimaryClass}>{forecast.period}</td>
               <td className={tableDataClass}>{forecast.summary}</td>
               <td className={tableDataClass}>
                 {forecast.conditions.temperature.low?.metric}°C

@@ -1,11 +1,11 @@
 import { ForecastTable } from "./ForecastTable";
 import { SnowfallData } from "./forecast_response";
 import { HtmlRenderer } from "./HtmlRenderer";
-
-export const tableRowClass = "bg-gray-800";
-export const tableDataPrimaryClass =
-  "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-export const tableDataClass = "px-6 py-4";
+import {
+  tableDataClass,
+  tableDataPrimaryClass,
+  tableRowClass
+} from "./styleutils";
 
 export default async function Home() {
   const forecastRequest = await fetch(
