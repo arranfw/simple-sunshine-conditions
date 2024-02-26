@@ -1,51 +1,26 @@
+import { ForecastTable } from "./ForecastTable";
+import { SnowfallData } from "./forecast_response";
 import { HtmlRenderer } from "./HtmlRenderer";
 
-interface Snowfall {
-  title: string;
-  imperial: string;
-  metric: number;
-}
-
-const tableRowClass = "bg-gray-800";
-const tableDataPrimaryClass =
+export const tableRowClass = "bg-gray-800";
+export const tableDataPrimaryClass =
   "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-const tableDataClass = "px-6 py-4";
+export const tableDataClass = "px-6 py-4";
 
 export default async function Home() {
-  const snowfallRequest = await fetch(
-    "https://www.skibanff.com/api/data/snow-reports",
-    {
-      next: { revalidate: 3600 }
-    }
-  );
-  const snowfallJson = await snowfallRequest.json();
-
   const forecastRequest = await fetch(
     "https://www.skibanff.com/api/data/weather-forecast",
     {
       next: { revalidate: 3600 }
     }
   );
-  const forecastJson = await forecastRequest.json();
-
-  console.log(forecastJson);
-
-  const snowfall: Record<string, Snowfall> = {
-    homepage: snowfallJson.homepage,
-    overnight: snowfallJson.overnight,
-    past24Hours: snowfallJson.past24Hours,
-    historical: snowfallJson.historical,
-    settledBase: snowfallJson.settledBase,
-    seasonTotal: snowfallJson.seasonTotal
-  };
-
-  const summary: string = snowfallJson.summary;
+  const forecastJson = (await forecastRequest.json()) as SnowfallData;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col items-center">
-        <p>Current temp: {snowfallJson.village_temp.metric}°C</p>
-        <p>Report time: {snowfallJson.timestamp}</p>
+        <p>Current temp: {forecastJson.snowreport.village_temp.metric}°C</p>
+        <p>Report time: {forecastJson.snowreport.timestamp}</p>
       </div>
       <table className="">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -63,48 +38,84 @@ export default async function Home() {
         </thead>
         <tbody>
           <tr className={tableRowClass}>
-            <td className={tableDataPrimaryClass}>{snowfall.homepage.title}</td>
-            <td className={tableDataClass}>{snowfall.homepage.imperial}</td>
-            <td className={tableDataClass}>{snowfall.homepage.metric}cm</td>
+            <td className={tableDataPrimaryClass}>
+              {forecastJson.snowreport.homepage.title}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.homepage.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.homepage.metric}cm
+            </td>
           </tr>
           <tr className={tableRowClass}>
             <td className={tableDataPrimaryClass}>
-              {snowfall.overnight.title}
+              {forecastJson.snowreport.overnight.title}
             </td>
-            <td className={tableDataClass}>{snowfall.overnight.imperial}</td>
-            <td className={tableDataClass}>{snowfall.overnight.metric}cm</td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.overnight.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.overnight.metric}cm
+            </td>
           </tr>
           <tr className={tableRowClass}>
             <td className={tableDataPrimaryClass}>
-              {snowfall.past24Hours.title}
+              {forecastJson.snowreport.past24Hours.title}
             </td>
-            <td className={tableDataClass}>{snowfall.past24Hours.imperial}</td>
-            <td className={tableDataClass}>{snowfall.past24Hours.metric}cm</td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.past24Hours.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.past24Hours.metric}cm
+            </td>
           </tr>
           <tr className={tableRowClass}>
             <td className={tableDataPrimaryClass}>
-              {snowfall.historical.title}
+              {forecastJson.snowreport.historical.title}
             </td>
-            <td className={tableDataClass}>{snowfall.historical.imperial}</td>
-            <td className={tableDataClass}>{snowfall.historical.metric}cm</td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.historical.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.historical.metric}cm
+            </td>
           </tr>
           <tr className={tableRowClass}>
             <td className={tableDataPrimaryClass}>
-              {snowfall.settledBase.title}
+              {forecastJson.snowreport.settledBase.title}
             </td>
-            <td className={tableDataClass}>{snowfall.settledBase.imperial}</td>
-            <td className={tableDataClass}>{snowfall.settledBase.metric}cm</td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.settledBase.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.settledBase.metric}cm
+            </td>
           </tr>
           <tr className={tableRowClass}>
             <td className={tableDataPrimaryClass}>
-              {snowfall.seasonTotal.title}
+              {forecastJson.snowreport.seasonTotal.title}
             </td>
-            <td className={tableDataClass}>{snowfall.seasonTotal.imperial}</td>
-            <td className={tableDataClass}>{snowfall.seasonTotal.metric}cm</td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.seasonTotal.imperial}
+            </td>
+            <td className={tableDataClass}>
+              {forecastJson.snowreport.seasonTotal.metric}cm
+            </td>
           </tr>
         </tbody>
       </table>
-      <HtmlRenderer htmlText={summary} />
+
+      <HtmlRenderer htmlText={forecastJson.snowreport.summary} />
+
+      <ForecastTable
+        forecastData={[
+          ...forecastJson.forecast.today,
+          ...forecastJson.forecast.week
+        ]}
+      />
+
+      <HtmlRenderer htmlText={forecastJson.summary} />
     </main>
   );
 }
