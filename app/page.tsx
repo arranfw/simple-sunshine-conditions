@@ -17,11 +17,18 @@ export default async function Home() {
   const forecastJson = (await forecastRequest.json()) as SnowfallData;
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex flex-col items-center">
-        <p>Current temp: {forecastJson.snowreport.village_temp.metric}°C</p>
-        <p>Report time: {forecastJson.snowreport.timestamp}</p>
+    <main className="flex min-h-screen flex-col gap-6 justify-between p-4">
+      <div className="flex flex-col items-center ">
+        <p className="text-lg">
+          Current temp: {forecastJson.snowreport.village_temp.metric}°C
+        </p>
+        <p className="text-lg">
+          Report time: {forecastJson.snowreport.timestamp}
+        </p>
       </div>
+
+      <h2 className="text-2xl">Snow Report</h2>
+
       <table className="">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
