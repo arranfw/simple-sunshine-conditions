@@ -12,20 +12,11 @@ export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full border-collapse">
-        <colgroup>
-          <col width="10%" />
-          <col width="255px" />
-          <col width="10%" />
-          <col width="10%" />
-          <col width="10%" />
-          <col width="10%" />
-        </colgroup>
         <thead className="bg-gray-800 dark:bg-gray-700">
           <tr>
             <th className={tableDataClass}>Period</th>
             <th className={tableDataClass}>Conditions</th>
-            <th className={tableDataClass}>(Low)</th>
-            <th className={tableDataClass}>(High)</th>
+            <th className={tableDataClass}>(Low / High)</th>
             <th className={tableDataClass}>Precipitation</th>
             <th className={tableDataClass}>Wind</th>
           </tr>
@@ -36,9 +27,7 @@ export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
               <td className={tableDataPrimaryClass}>{forecast.period}</td>
               <td className={tableDataClass}>{forecast.summary}</td>
               <td className={tableDataClass}>
-                {forecast.conditions.temperature.low?.metric}°C
-              </td>
-              <td className={tableDataClass}>
+                {forecast.conditions.temperature.low?.metric}°C /{" "}
                 {forecast.conditions.temperature.high?.metric}°C
               </td>
               <td className={tableDataClass}>
