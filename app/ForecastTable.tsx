@@ -45,7 +45,10 @@ export const ForecastTable: React.FC<{ forecastData: ForecastDay[] }> = ({
     <div className="w-full">
       <h2 className="text-2xl mb-6">Forecast</h2>
       {forecastData.map((forecast) => (
-        <div className="bg-slate-800 mb-2 border rounded p-2 flex flex-col items-center">
+        <div
+          key={forecast.period}
+          className="bg-slate-800 mb-2 border rounded p-2 flex flex-col items-center"
+        >
           <h3 className="bg-slate-900 text-lg w-full text-center ">
             {forecast.period}
           </h3>
